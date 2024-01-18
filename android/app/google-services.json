@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "101438410590",
+    "project_id": "restaurant-helper-1",
+    "storage_bucket": "restaurant-helper-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101438410590:android:a4cfba46d1823fdd9b09cf",
+        "android_client_info": {
+          "package_name": "pkielek.restauratour.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaDVt4OI91A4rWCeA5PxaapKd3MRSPIq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

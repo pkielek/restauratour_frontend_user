@@ -15,6 +15,8 @@ dependencies:
     path: ../shared/auth
   planner:
     path: ../shared/planner
+  restaurant:
+    path: ../shared/restaurant
   dio: ^5.2.0
   rounded_loading_button: ^2.1.0
   routemaster: ^1.0.1
@@ -26,6 +28,10 @@ dependencies:
   json_annotation: ^4.8.1
   flutter_hooks: ^0.20.3
   url_launcher: ^6.1.8
+  social_login_buttons: ^1.0.7
+  google_sign_in: ^6.2.1
+  google_maps_flutter: ^2.5.1
+  location: ^5.0.3
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +58,7 @@ flutter:
   - images/logo.svg
   - images/logowide.webp
   - .env
+  - images/missing.png
 
   fonts:
   - family: NotoSansDisplay
