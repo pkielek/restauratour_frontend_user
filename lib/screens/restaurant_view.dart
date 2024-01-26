@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:restaurant/restaurant.dart';
 import 'package:restaurant_helper_phone/model/restaurant_list.dart';
+import 'package:restaurant_helper_phone/widgets/planner/reservation_options.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:utils/utils.dart';
 
@@ -55,19 +56,37 @@ class RestaurantView extends ConsumerWidget {
             ref.watch(InfoProvider(id)).when(
                 data: (data) {
                   return Padding(
-                    padding: EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(12),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          if (data.flags.firstWhere((e) => e.id == 1).setting)
+                            SizedBox(
+                                width: 1000,
+                                child: DefaultButton(
+                                  callback: () => Routemaster.of(context).push('planner'),
+                                  text: data.flags
+                                          .firstWhere((e) => e.id == 3)
+                                          .setting && data.flags
+                                          .firstWhere((e) => e.id == 4)
+                                          .setting
+                                      ? "Zarezerwuj stolikl"
+                                      : "Zobacz plan restauracji",
+                                )),
+                          if (data.flags.firstWhere((e) => e.id == 4).setting &&
+                              !data.flags.firstWhere((e) => e.id == 3).setting)
+                            SizedBox(
+                                width: 1000,
+                                child: DefaultButton(
+                                  callback: () => showDialog(context: context, builder: (context) => ReservationOptions(restaurantId: id,isDialog: true),),
+                                  text: "Zarezerwuj stolik",
+                                )),
                           SizedBox(
                               width: 1000,
                               child: DefaultButton(
-                                  callback: () => null,
-                                  text: "Zarezerwuj stolik")),
-                          SizedBox(
-                              width: 1000,
-                              child: DefaultButton(
-                                  callback: () => Routemaster.of(context).push('menu'), text: "Zobacz menu")),
+                                  callback: () =>
+                                      Routemaster.of(context).push('menu'),
+                                  text: "Zobacz menu")),
                           const Text("Adres", style: listStyle),
                           Text(data.toFullAddress, style: listLightStyle),
                           const SizedBox(height: 30),

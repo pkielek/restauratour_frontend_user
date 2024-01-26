@@ -40,7 +40,7 @@ class RestaurantList extends _$RestaurantList {
     }.entries);
     final token = ref.read(authProvider).value!;
     try {
-      final response = await Dio().get(
+      final response = await Dio().post(
           '${dotenv.env['USER_API_URL']!}restaurant-search',
           data: options,
           options:
@@ -51,7 +51,6 @@ class RestaurantList extends _$RestaurantList {
     } on DioException catch (e) {
       if (e.response != null) {
         Map responseBody = e.response!.data;
-        print(e.response);
         fluttertoastDefault(responseBody['detail'], true);
       } else {
         fluttertoastDefault(

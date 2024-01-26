@@ -18,11 +18,6 @@ class MenuView extends ConsumerWidget {
     final id = int.parse(restaurantId);
     return ref.watch(RestaurantMenuProvider(id)).when(
         data: (data) {
-          if (data.items.isEmpty) {
-            ref
-                .read(RestaurantMenuProvider(id).notifier)
-                .selectCategory(data.categories.first.id);
-          }
           return DefaultTabController(
             length: data.categories.length,
             child: Scaffold(
@@ -54,7 +49,17 @@ class MenuView extends ConsumerWidget {
                 ),
                 body: Padding(
                   padding: const EdgeInsets.all(12),
-                  child: ListView.separated(
+                  child: data.items.isEmpty ? ListView(shrinkWrap: true, children: [
+                          const Text(
+                            "Niestety, w tej kategorii nie ma obecnie pozycji",
+                            textAlign: TextAlign.center,
+                            style: headerStyle,
+                          ),
+                          Image.asset("images/missing2.png"),
+                          const Text("© Storyset, Freepik",
+                              textAlign: TextAlign.center,
+                              style: footprintStyle),
+                        ]) : ListView.separated(
                     separatorBuilder: (context, index) => const SizedBox(height:12),
                     shrinkWrap: true,
                     itemCount: data.items.length,

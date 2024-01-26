@@ -1,8 +1,8 @@
 import 'package:auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:restaurant/restaurant.dart';
 import 'package:restaurant_helper_phone/model/restaurant_list.dart';
+import 'package:restaurant_helper_phone/model/restaurant_reservation.dart';
 import 'package:restaurant_helper_phone/widgets/home/search_options.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:utils/utils.dart';
@@ -12,7 +12,6 @@ class HomeView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final missingRestaurants = [Image.asset('images/missing.png')];
     return Scaffold(
       drawer: Drawer(
         backgroundColor: Colors.white,
@@ -24,29 +23,73 @@ class HomeView extends HookConsumerWidget {
               const SizedBox(
                 height: 25,
               ),
-              const ListTile(
-                  leading: Icon(Icons.chair_alt),
-                  title: Text(
-                    "Złożone rezerwacje",
-                    style: listLightStyle,
-                  )),
-              const ListTile(
-                  leading: Icon(Icons.history),
-                  title: Text(
-                    "Historia rezerwacji",
-                    style: listLightStyle,
-                  )),
+              ListTile(
+                leading: const Icon(Icons.chair_alt),
+                title: const Text(
+                  "Złożone rezerwacje",
+                  style: listLightStyle,
+                ),
+                onTap: () => Routemaster.of(context).push('reservations'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.history),
+                title: const Text(
+                  "Historia rezerwacji",
+                  style: listLightStyle,
+                ),
+                onTap: () =>
+                    Routemaster.of(context).push('reservations_history'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.key),
+                title: const Text("Zmień hasło", style: listLightStyle),
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (context) =>
+                      const ChangePasswordDialog(type: AuthType.user),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text(
+                  "Wyloguj się",
+                  style: listLightStyle,
+                ),
+                onTap: ref.read(authProvider.notifier).logOut,
+              )
             ]),
       ),
       appBar: AppBar(
-        title: const Text(
-          "Wyszukaj restaurację",
-          style: headerStyle,
-        ),
-        primary: true,
-        backgroundColor: primaryColor,
-        foregroundColor: Colors.white,
-      ),
+          title: const Text(
+            "Wyszukaj restaurację",
+            style: headerStyle,
+          ),
+          primary: true,
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          bottom: ref.watch(hasOngoingReservationsProvider).when(
+              data: (data) => data
+                  ? PreferredSize(
+                      preferredSize: const Size.fromHeight(40),
+                      child: InkWell(
+                          onTap: () =>
+                              Routemaster.of(context).push('reservations'),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: RichText(
+                                text: TextSpan(children: [
+                              TextSpan(
+                                  text: "Masz trwającą rezerwację! ",
+                                  style: headerStyle.copyWith(
+                                      color: Colors.white)),
+                              const WidgetSpan(
+                                  child: Icon(Icons.trending_flat,
+                                      color: Colors.white))
+                            ])),
+                          )))
+                  : null,
+              error: (_, __) => null,
+              loading: () => null)),
       body: Column(
         children: [
           const SearchOptions(),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -36,7 +35,7 @@ class RestaurantSearch extends _$RestaurantSearch {
   }
 
   void updateDaysAvailable(Set<int> days) {
-    state = state.copyWith(daysAvailable: days);
+    state = state.copyWith(daysAvailable: days, hasFreeTables: days.isNotEmpty && state.hasFreeTables==true ? false : state.hasFreeTables);
   }
 
   void updateTimeStart(String? hour) {

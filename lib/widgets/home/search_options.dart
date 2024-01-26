@@ -5,8 +5,7 @@ import 'package:restaurant_helper_phone/model/restaurant_search.dart';
 import 'package:utils/utils.dart';
 
 class SearchOptions extends ConsumerWidget {
-  const SearchOptions(
-      {super.key});
+  const SearchOptions({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +27,8 @@ class SearchOptions extends ConsumerWidget {
                     initialValue: options.searchName,
                     textInputAction: TextInputAction.search,
                     onChanged: notifier.updateSearchName,
-                    onFieldSubmitted: (_) => ref.read(restaurantListProvider.notifier).search,
+                    onFieldSubmitted: (_) =>
+                        ref.read(restaurantListProvider.notifier).search,
                     decoration: const InputDecoration(
                         labelText: "Nazwa restauracji",
                         border: InputBorder.none,
@@ -71,28 +71,29 @@ class SearchOptions extends ConsumerWidget {
                   onSelectionChanged: notifier.updateHasFreeTables,
                   multiSelectionEnabled: false,
                   showSelectedIcon: false,
-                  segments: const [
-                    ButtonSegment(
+                  segments: [
+                    const ButtonSegment(
                         tooltip: "Wszystkie restauracje",
                         value: null,
                         icon: Icon(
                           Icons.restaurant,
                           color: Colors.black,
                         )),
-                    ButtonSegment(
+                    const ButtonSegment(
                         tooltip: "Otwarte restauracje",
                         value: false,
                         icon: Icon(
                           Icons.event_available,
                           color: Colors.black,
                         )),
-                    ButtonSegment(
-                        tooltip: "Wolne stoliki",
-                        value: true,
-                        icon: Icon(
-                          Icons.table_bar,
-                          color: Colors.black,
-                        ))
+                    if (options.daysAvailable.isEmpty)
+                      const ButtonSegment(
+                          tooltip: "Wolne stoliki",
+                          value: true,
+                          icon: Icon(
+                            Icons.table_bar,
+                            color: Colors.black,
+                          ))
                   ],
                   selected: {options.hasFreeTables},
                 ),
@@ -148,105 +149,105 @@ class SearchOptions extends ConsumerWidget {
               ),
             ],
           ),
-          if(options.hasFreeTables != null)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              SizedBox(
-                width:60,
-                child: SegmentedButton<bool>(
-                    onSelectionChanged: (value) => value.isEmpty
-                        ? notifier.updateDaysAvailable({0})
-                        : notifier.updateDaysAvailable({}),
-                    showSelectedIcon: false,
-                    emptySelectionAllowed: true,
-                    segments: [
-                      ButtonSegment(
-                          label: Text(
-                            "Teraz",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: options.daysAvailable.isEmpty
-                                    ? FontWeight.bold
-                                    : FontWeight.normal),
-                          ),
-                          value: true)
-                    ],
-                    selected: options.daysAvailable.isEmpty ? {true} : {}),
-              ),
-              const SizedBox(width: 8,height:58),
-              if (options.daysAvailable.isNotEmpty)
-                Expanded(
-                  child: SegmentedButton<int>(
-                      style: const ButtonStyle(padding: MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal:0)),minimumSize: MaterialStatePropertyAll(Size(0,0))),
-                      onSelectionChanged: notifier.updateDaysAvailable,
+          if (options.hasFreeTables != null)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 60,
+                  child: SegmentedButton<bool>(
+                      onSelectionChanged: (value) => value.isEmpty
+                          ? notifier.updateDaysAvailable({0})
+                          : notifier.updateDaysAvailable({}),
                       showSelectedIcon: false,
                       emptySelectionAllowed: true,
-                      multiSelectionEnabled: true,
                       segments: [
-                        for (final i in List.generate(6, (index) => index))
-                          ButtonSegment(
-                              label: Text(
-                                getWeekdayNameShort(i),
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight:
-                                        options.daysAvailable.contains(i)
-                                            ? FontWeight.bold
-                                            : FontWeight.normal),
-                              ),
-                              value: i)
+                        ButtonSegment(
+                            label: Text(
+                              "Teraz",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: options.daysAvailable.isEmpty
+                                      ? FontWeight.bold
+                                      : FontWeight.normal),
+                            ),
+                            value: true)
                       ],
-                      selected: options.daysAvailable),
+                      selected: options.daysAvailable.isEmpty ? {true} : {}),
                 ),
-              const SizedBox(width: 8),
-              if (options.daysAvailable.isNotEmpty)
-                SizedBox(
-                  width: 25,
-                  child: TextFormField(
-                    maxLength: 2,
-                    
-                    initialValue: options.timeStart.toString(),
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.number,
-                    onChanged: notifier.updateTimeStart,
-                    decoration: const InputDecoration(
-
-                        counterText: "",
-                        labelText: "Od",
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none),
+                const SizedBox(width: 8, height: 58),
+                if (options.daysAvailable.isNotEmpty)
+                  Expanded(
+                    child: SegmentedButton<int>(
+                        style: const ButtonStyle(
+                            padding: MaterialStatePropertyAll(
+                                EdgeInsets.symmetric(horizontal: 0)),
+                            minimumSize: MaterialStatePropertyAll(Size(0, 0))),
+                        onSelectionChanged: notifier.updateDaysAvailable,
+                        showSelectedIcon: false,
+                        emptySelectionAllowed: true,
+                        multiSelectionEnabled: true,
+                        segments: [
+                          for (final i in List.generate(6, (index) => index))
+                            ButtonSegment(
+                                label: Text(
+                                  getWeekdayNameShort(i),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 10,
+                                      fontWeight:
+                                          options.daysAvailable.contains(i)
+                                              ? FontWeight.bold
+                                              : FontWeight.normal),
+                                ),
+                                value: i)
+                        ],
+                        selected: options.daysAvailable),
                   ),
-                ),
-              if (options.daysAvailable.isNotEmpty)
-              
-                const SizedBox(
-                  width: 25,
-                  child: Text("-",
-                      textAlign: TextAlign.left, style: TextStyle(fontSize: 32, color: Colors.black87)),
-                ),
-              if (options.daysAvailable.isNotEmpty)
-                SizedBox(
-                  width: 25,
-                  child: TextFormField(
-                    
-                    maxLength: 2,
-                    initialValue: options.timeEnd.toString(),
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.number,
-                    onChanged: notifier.updateTimeEnd,
-                    decoration: const InputDecoration(
-                        counterText: "",
-                        labelText: "Do",
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none),
+                const SizedBox(width: 8),
+                if (options.daysAvailable.isNotEmpty)
+                  SizedBox(
+                    width: 25,
+                    child: TextFormField(
+                      maxLength: 2,
+                      initialValue: options.timeStart.toString(),
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
+                      onChanged: notifier.updateTimeStart,
+                      decoration: const InputDecoration(
+                          counterText: "",
+                          labelText: "Od",
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none),
+                    ),
                   ),
-                ),
-            ],
-          )
+                if (options.daysAvailable.isNotEmpty)
+                  const SizedBox(
+                    width: 25,
+                    child: Text("-",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 32, color: Colors.black87)),
+                  ),
+                if (options.daysAvailable.isNotEmpty)
+                  SizedBox(
+                    width: 25,
+                    child: TextFormField(
+                      maxLength: 2,
+                      initialValue: options.timeEnd.toString(),
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.number,
+                      onChanged: notifier.updateTimeEnd,
+                      decoration: const InputDecoration(
+                          counterText: "",
+                          labelText: "Do",
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none),
+                    ),
+                  ),
+              ],
+            )
         ],
       ),
     );
