@@ -2,7 +2,7 @@ import 'package:auth/auth.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:restaurant_helper_phone/model/restaurant_reservation.dart';
+import 'package:reservations/reservations.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:utils/utils.dart';
 

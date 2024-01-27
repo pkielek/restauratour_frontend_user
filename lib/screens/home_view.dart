@@ -1,8 +1,8 @@
 import 'package:auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reservations/reservations.dart';
 import 'package:restaurant_helper_phone/model/restaurant_list.dart';
-import 'package:restaurant_helper_phone/model/restaurant_reservation.dart';
 import 'package:restaurant_helper_phone/widgets/home/search_options.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:utils/utils.dart';

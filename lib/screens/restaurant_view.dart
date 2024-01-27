@@ -113,9 +113,7 @@ class RestaurantView extends ConsumerWidget {
                           Text(data.nip, style: listLightStyle),
                           SizedBox(
                             height: 200,
-                            child: true
-                                ? Container(color: Colors.red)
-                                : GoogleMap(
+                            child: GoogleMap(
                                     markers: {
                                         Marker(
                                             markerId: const MarkerId(""),

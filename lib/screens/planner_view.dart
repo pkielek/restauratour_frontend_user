@@ -45,7 +45,7 @@ class PlannerView extends ConsumerWidget {
                       PlannerBoard(board: board, notifier: notifier),
                       if (reservationsEnabled)
                         Padding(
-                          padding: EdgeInsets.only(top: 12),
+                          padding: const EdgeInsets.only(top: 12),
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: 58,

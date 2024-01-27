@@ -1,7 +1,7 @@
 import 'package:auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:restaurant_helper_phone/model/restaurant_reservation.dart';
+import 'package:reservations/reservations.dart';
 import 'package:restaurant_helper_phone/widgets/reservations/reservation_tile.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:utils/utils.dart';
@@ -45,7 +45,7 @@ class ReservationView extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.all(8),
                       child: Hero(
-                        tag: "reservation:${reservationId}",
+                        tag: "reservation:$reservationId",
                         child: Material(
                           child: InkWell(
                             onTap: () async {},
@@ -82,11 +82,13 @@ class ReservationView extends ConsumerWidget {
                     if (data.status == ReservationStatus.accepted &&
                         data.order.isEmpty)
                       Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         child: Column(children: [
-                          const Text(
-                            "Rezerwacja nie ma jeszcze zamówienia - warto je złożyć wcześniej by ułatwić pracę kelnerom!",
+                          Text(
+                            isPast
+                                ? "Rezerwacja nie miała zamówienia"
+                                : "Rezerwacja nie ma jeszcze zamówienia - warto je złożyć wcześniej by ułatwić pracę kelnerom!",
                             textAlign: TextAlign.center,
                             style: listStyle,
                           ),
@@ -112,13 +114,75 @@ class ReservationView extends ConsumerWidget {
                             )),
                     if (!isPast && data.status == ReservationStatus.accepted)
                       Padding(
-                        padding: EdgeInsets.only(top: 24.0),
+                        padding: const EdgeInsets.only(top: 24.0),
                         child: DefaultButton(
                             callback: () =>
                                 Routemaster.of(context).push('order'),
                             text:
                                 "${data.order.isEmpty ? "Złóż" : "Edytuj"} zamówienie"),
-                      )
+                      ),
+                    const Text("Uwagi do zamówienia:",
+                        style: headerStyle, textAlign: TextAlign.center),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(children: [
+                        if (data.areDetailsEdited)
+                          Expanded(
+                              child: TextFormField(
+                                  maxLines: 6,
+                                  initialValue: data.additionalDetails,
+                                  maxLength: 240,
+                                  onChanged: (value) => ref
+                                      .read(ReservationProvider(AuthType.user)
+                                          .notifier)
+                                      .onEditDetails(id,value),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0)),
+                                  )))
+                        else
+                          Expanded(
+                              child: Text(data.additionalDetails,
+                                  style: listLightStyle)),
+                        if (!isPast &&
+                            data.status != ReservationStatus.rejected)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Column(
+                                children: data.areDetailsEdited
+                                    ? [
+                                        IconButton(
+                                            onPressed: () => ref
+                                                .read(ReservationProvider(
+                                                        AuthType.user)
+                                                    .notifier)
+                                                .saveEditDetails(id),
+                                            icon: const Icon(Icons.save,
+                                                color: Colors.indigo)),
+                                        IconButton(
+                                            onPressed: () => ref
+                                                .read(ReservationProvider(
+                                                        AuthType.user)
+                                                    .notifier)
+                                                .cancelEditDetails(id),
+                                            icon: const Icon(Icons.close,
+                                                color: Colors.red))
+                                      ]
+                                    : [
+                                        IconButton(
+                                            onPressed: () => ref
+                                                .read(ReservationProvider(
+                                                        AuthType.user)
+                                                    .notifier)
+                                                .editDetails(id),
+                                            icon: Icon(Icons.edit,
+                                                color: Colors.yellow.shade900))
+                                      ]),
+                          )
+                      ]),
+                    ),
+                    const SizedBox(height: 36),
                   ],
                 ),
               );

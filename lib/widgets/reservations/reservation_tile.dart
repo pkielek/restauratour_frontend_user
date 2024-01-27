@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:reservations/reservations.dart';
 import 'package:utils/utils.dart';
 
-import '../../model/restaurant_reservation.dart';
 
 class ReservationTile extends ConsumerWidget {
   const ReservationTile({super.key, required this.data});
