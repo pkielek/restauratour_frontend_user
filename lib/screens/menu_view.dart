@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:restaurant_helper_phone/model/restaurant_menu.dart';
-import 'package:restaurant_helper_phone/widgets/menu/menu_item_tile.dart';
+import 'package:menu/menu.dart';
 import 'package:utils/utils.dart';
 
 class MenuView extends ConsumerWidget {

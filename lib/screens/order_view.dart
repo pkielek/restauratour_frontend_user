@@ -1,9 +1,10 @@
+import 'package:auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:restaurant_helper_phone/model/restaurant_menu.dart';
-import 'package:restaurant_helper_phone/widgets/menu/menu_item_tile.dart';
+import 'package:reservations/reservations.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:utils/utils.dart';
+import 'package:menu/menu.dart';
 
 class OrderView extends ConsumerWidget {
   const OrderView({super.key, required this.reservationId});
@@ -27,7 +28,7 @@ class OrderView extends ConsumerWidget {
                     IconButton(
                         onPressed: () async => await ref
                                 .read(RestaurantOrderProvider(id).notifier)
-                                .updateOrder()
+                                .updateOrder(ref.read(ReservationProvider(AuthType.user).notifier).refresh)
                             ? Routemaster.of(context).pop()
                             : null,
                         icon: const Icon(Icons.save))

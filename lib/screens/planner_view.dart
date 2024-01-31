@@ -49,7 +49,7 @@ class PlannerView extends ConsumerWidget {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: 58,
-                              child: ReservationOptions(restaurantId: id)),
+                              child: Container(color:Colors.white,child: ReservationOptions(restaurantId: id))),
                         ),
                     ]),
                   ),

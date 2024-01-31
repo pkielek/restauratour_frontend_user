@@ -188,7 +188,7 @@ class SearchOptions extends ConsumerWidget {
                         emptySelectionAllowed: true,
                         multiSelectionEnabled: true,
                         segments: [
-                          for (final i in List.generate(6, (index) => index))
+                          for (final i in List.generate(7, (index) => index))
                             ButtonSegment(
                                 label: Text(
                                   getWeekdayNameShort(i),

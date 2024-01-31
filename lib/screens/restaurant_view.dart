@@ -70,7 +70,7 @@ class RestaurantView extends ConsumerWidget {
                                           .setting && data.flags
                                           .firstWhere((e) => e.id == 4)
                                           .setting
-                                      ? "Zarezerwuj stolikl"
+                                      ? "Zarezerwuj stolik"
                                       : "Zobacz plan restauracji",
                                 )),
                           if (data.flags.firstWhere((e) => e.id == 4).setting &&
